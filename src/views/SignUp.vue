@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="signup"
-    class="d-flex align-items-center justify-content-center container"
-    style="min-height: 60vh"
-  >
+  <div id="signup" class="d-flex align-items-center justify-content-center container" style="min-height: 60vh">
     <div class="w-100" style="max-width: 400px">
       <div class="card">
         <div class="card-body">
@@ -12,6 +8,11 @@
             <div class="alert alert-danger">{{ state.error }}</div>
           </div>
           <form>
+            <div id="name-group" class="form-group mb-3">
+              <label class="form-label">Full Name</label>
+              <input class="form-control" id="name" v-model="state.name" />
+            </div>
+
             <div id="email-group" class="form-group mb-3">
               <label class="form-label">Email</label>
               <input type="email" class="form-control" id="email" v-model="state.email" />
@@ -19,22 +20,12 @@
 
             <div id="password-group" class="form-group mb-3">
               <label class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                v-model="state.password"
-              />
+              <input type="password" class="form-control" id="password" v-model="state.password"/>
             </div>
 
             <div id="confirm-password-group" class="form-group mb-3">
               <label class="form-label">Confirm Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="confirm-password"
-                v-model="state.confirmPassword"
-              />
+              <input type="password" class="form-control" id="confirm-password" v-model="state.confirmPassword"/>
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Log In!</button>
@@ -62,6 +53,7 @@ export default {
     const state = reactive({
       email: "",
       password: "",
+      name: "",
       confirmPassword: "",
       error: false,
       loading: false,
