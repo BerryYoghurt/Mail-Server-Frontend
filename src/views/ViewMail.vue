@@ -1,6 +1,7 @@
 <template>
   <div class="container-fluid">
-    <div class = "row-sm border">
+    <!--button bar-->
+    <div class = "row-sm border shadow">
       <button class = "btn btn-primary">Back</button>
       <!--context specific buttons-->
       <button class = "btn btn-primary">Delete</button>
@@ -9,78 +10,38 @@
       <!--metadata-->
       <div class = "col-sm-3 border px-0 mx-0">
         <ul class = "list-group">
+          <!--Subject-->
+          <li class = "card">
+            <SubjectSection></SubjectSection>
+          </li>
+          <!--From-->
+          <li class = "card">
+            <FromSection></FromSection>
+          </li>
+          <!--Date-->
           <li class = "card">
             <div class = "row mx-0">
-              <div class = "col-sm-4 border">
-                Subject
-              </div>
-
-              <input class = "col-sm-8 border" type = "text" value = "My Subject" disabled = true>
+              <label for = "date" class = "col-sm-4 border">Date</label>
+              <!--always disabled-->
+              <input id = "date" class = "col-sm-8 border" type = "text" value = "17:00 17/20/2020" disabled>
             </div>
           </li>
+          <!--Priority-->
           <li class = "card">
-            <div class = "row mx-0">
-              <div class = "col-sm-4 border">
-                From
-              </div>
-              <div class = "col-sm-8 border">
-                Sender
-              </div>
-            </div>
+            <PrioritySection></PrioritySection>
           </li>
+          <!--Receivers-->
           <li class = "card">
-            <div class = "row mx-0">
-              <div class = "col-sm-4 border">
-                Date
-              </div>
-              <div class = "col-sm-8 border">
-                20/20
-              </div>
-            </div>
-          </li>
-          <li class = "card">
-            <div class = "row mx-0">
-              <div class = "col-sm-4 border">
-                Priority
-              </div>
-              <div class = "col-sm-8 border">
-                Normal
-              </div>
-            </div>
-          </li>
-          <li class = "card">
-            <div class="card-title">Receivers</div>
-            <div class = "card-body">
-              <ul class = "list-group">
-                <li class = "list-item">
-                  receiver1
-                </li>
-                <li class = "list-item">
-                  receiver2
-                </li>
-                <li class = "list-item">
-                  receiver3
-                </li>
-              </ul>
-            </div>
-
+            <ReceiversSection></ReceiversSection>
           </li>
         </ul>
 
       </div>
       <!--email-->
       <div class = "col-sm-9 border">
-        <div>Text</div>
+        <TextEntry></TextEntry>
         <hr>
-        <div class = "float-left">
-          <h6>Attachment(s)</h6>
-          <ul class = "list-group list-group-horizontal">
-            <li class = "card list-group-item">
-              Attachment1
-            </li>
-          </ul>
-        </div>
-
+        <AttachmentsSection></AttachmentsSection>
       </div>
     </div>
 
@@ -88,8 +49,47 @@
 </template>
 
 <script>
+import FromSection from '../components/FromSection';
+import SubjectSection from "@/components/SubjectSection";
+import PrioritySection from "@/components/PrioritySection";
+import ReceiversSection from "@/components/ReceiversSection";
+import TextEntry from "@/components/TextEntry";
+import AttachmentsSection from "@/components/AttachmentsSection";
 export default {
-  name: "ViewMail"
+  name: "ViewMail",
+  components: {AttachmentsSection, TextEntry, ReceiversSection, PrioritySection, SubjectSection, FromSection},
+  props:{
+    mailbox:String,
+    mailID:String,
+    newMail:Boolean
+  },
+  data(){
+    return {
+      mail: {
+        from : "me",
+        to: "myself",
+        date: "17:00 17/12/2020",
+        priority: 2,
+        text: "Hey there",
+        attachments: []
+      }
+    }
+  },
+  mounted() {
+    <!--TODO fetch email-->
+
+    switch(this.mailbox){
+      case "inbox":
+        break;
+      case "sent":
+        break;
+      case "trash":
+        break;
+      case "draft":
+        break;
+      default:
+    }
+  }
 }
 </script>
 
