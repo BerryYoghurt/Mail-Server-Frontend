@@ -2,8 +2,8 @@
   <div class="card-header">Receivers</div>
   <div class = "card-body">
     <ul class = "list-group">
-      <li class = "list-item">
-        receiver1
+      <li class = "list-item" v-for="(receiver,index) in receivers" :key="index">
+        {{receiver}}
       </li>
     </ul>
   </div>

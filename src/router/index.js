@@ -29,6 +29,11 @@ const routes = [
     path: '/homepage',
     name: 'HomePage',
     component: () => import('../views/HomePage.vue')
+  },
+  {
+    path: '/view', //testing
+    name: 'ViewMail',
+    component: () => import('../views/ViewMail.vue')
   }
 ]
 

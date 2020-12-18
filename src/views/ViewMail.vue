@@ -1,96 +1,88 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid vh-100 vw-100" v-if="state.mail"> <!--only render if mail has been fetched-->
     <!--button bar-->
     <div class = "row-sm border shadow">
       <button class = "btn btn-primary">Back</button>
       <!--context specific buttons-->
       <button class = "btn btn-primary">Delete</button>
     </div>
-    <div class = "row border">
+    <div class = "row border mt-2">
       <!--metadata-->
-      <div class = "col-sm-3 border px-0 mx-0">
+      <div class = "col-sm-3 border shadow px-0 mx-0">
         <ul class = "list-group">
           <!--Subject-->
           <li class = "card">
-            <SubjectSection></SubjectSection>
+            <SubjectSection :editable="state.editable" v-model="state.mail.subject"></SubjectSection>
           </li>
           <!--From-->
           <li class = "card">
-            <FromSection></FromSection>
+            <div class = "row mx-0">
+              <div class = "col-sm-4 border">From</div>
+              <div class = "col-sm-8 border">{{state.mail.from}}</div>
+            </div>
           </li>
           <!--Date-->
           <li class = "card">
             <div class = "row mx-0">
-              <label for = "date" class = "col-sm-4 border">Date</label>
-              <!--always disabled-->
-              <input id = "date" class = "col-sm-8 border" type = "text" value = "17:00 17/20/2020" disabled>
+              <div class = "col-sm-4 border">Date</div>
+              <div class = "col-sm-8 border">{{state.mail.date}}</div>
             </div>
           </li>
           <!--Priority-->
           <li class = "card">
-            <PrioritySection></PrioritySection>
+            <PrioritySection
+                :editable="state.editable"
+                :priority="state.mail.priority"
+                @update:priority="state.mail.priority=$event"
+            />
           </li>
           <!--Receivers-->
           <li class = "card">
-            <ReceiversSection></ReceiversSection>
+            <ReceiversSection :editable="state.editable" :receivers="state.mail.receivers"></ReceiversSection>
           </li>
         </ul>
 
       </div>
       <!--email-->
       <div class = "col-sm-9 border">
-        <TextEntry></TextEntry>
+        <TextEntry :editable="state.editable" v-model="state.mail.text"></TextEntry>
         <hr>
-        <AttachmentsSection></AttachmentsSection>
+        <AttachmentsSection :editable="state.editable" :attachments="state.mail.attachments"></AttachmentsSection>
       </div>
     </div>
-
+    {{state.mail}}
   </div>
+
 </template>
 
 <script>
-import FromSection from '../components/FromSection';
 import SubjectSection from "@/components/SubjectSection";
 import PrioritySection from "@/components/PrioritySection";
 import ReceiversSection from "@/components/ReceiversSection";
 import TextEntry from "@/components/TextEntry";
 import AttachmentsSection from "@/components/AttachmentsSection";
+import {reactive, onMounted} from 'vue';
+import mockMails from "@/assets/MockEmails"
+
 export default {
   name: "ViewMail",
-  components: {AttachmentsSection, TextEntry, ReceiversSection, PrioritySection, SubjectSection, FromSection},
-  props:{
-    mailbox:String,
-    mailID:String,
-    newMail:Boolean
-  },
-  data(){
-    return {
-      mail: {
-        from : "me",
-        to: "myself",
-        date: "17:00 17/12/2020",
-        priority: 2,
-        text: "Hey there",
-        attachments: []
-      }
-    }
-  },
-  mounted() {
-    <!--TODO fetch email-->
+  components: {AttachmentsSection, TextEntry, ReceiversSection, PrioritySection, SubjectSection},
+  setup(){
+    const state = reactive({
+      mail: {},
+      mailbox:'',
+      newMail: false,
+      editable: true
+    });
+    onMounted(() => {
+      setTimeout(() => state.mail = mockMails[0],2000); //for testing.. TODO fetch from API
+      state.mailbox = "inbox"; //for testing.. TODO get from router and classify
+    });
 
-    switch(this.mailbox){
-      case "inbox":
-        break;
-      case "sent":
-        break;
-      case "trash":
-        break;
-      case "draft":
-        break;
-      default:
-    }
+    return {
+      state,
+
+    };
   }
 }
 </script>
-
-<!-- no need for <style> because bootstrap takes care of it.. probably-->
