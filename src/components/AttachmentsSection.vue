@@ -11,8 +11,13 @@
       </ul>
     </div>
     <div class="card-footer" v-if="editable">
-      <label for="add">Add Attachment</label>
-      <input class="btn btn-primary" id = "add" type = "file">
+      <label for="add"></label>
+      <input class="btn btn-outline-primary"
+             id = "add"
+             type = "file"
+             value=""
+             @click = "appendAttachments"
+      >
     </div>
   </div>
 </template>
@@ -23,10 +28,26 @@ export default {
   props:{
     editable:Boolean,
     attachments:Array //should have a name and a Blob(file) attribute.. I think
+  },
+  data(){
+    return{
+      newAttachment:{
+        name:'',
+        value: Blob
+      }
+    }
+  },
+  methods :{
+    appendAttachments(){
+      //this.attachments.push(event.target.value);
+      //TODO see how the attachment should be appended...
+    }
   }
 }
 </script>
 
 <style scoped>
+  #add{
 
+  }
 </style>
