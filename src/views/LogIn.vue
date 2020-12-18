@@ -27,7 +27,7 @@
               />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Log In!</button>
+            <button @click="logIn" class="btn btn-primary w-100">Log In!</button>
           </form>
         </div>
       </div>
@@ -45,6 +45,7 @@
 
 <script>
 import { reactive } from "vue";
+import {mapMutations} from 'vuex';
 
 export default {
   name: "LogIn",
@@ -56,8 +57,28 @@ export default {
       loading: false,
     });
 
+    function logIn() {
+      const body = {
+        email: state.email,
+        password: state.password
+      };
+      console.log(body);
+      // axios call here
+      const token = 'token secret gamed';
+      const user = {
+        username: 'Ahmed Bahgat',
+        userHandle: 'ABE_Mark45',
+        id: '435590345'
+      }
+
+      this.SET_USER(user);
+      this.SET_TOKEN(token);
+    }
+
     return {
       state,
+      ...mapMutations(['SET_USER', 'SET_TOKEN']),
+      logIn
     };
   },
 };
