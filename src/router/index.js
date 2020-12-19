@@ -29,9 +29,10 @@ const routes = [
     component: () => import('../views/HomePage.vue')
   },
   {
-    path: '/view',
-    name: 'ViewMail',
-    component: () => import('../views/ViewMail.vue')
+    path: '/compose',
+    name: 'EditMail',
+    params: '',//TODO create a UUID for the email
+    component: () => import('../views/EditMail.vue')
   },
   {
     path: '/mytest',
