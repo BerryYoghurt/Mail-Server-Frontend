@@ -1,21 +1,26 @@
 <template>
-  <div id="app">
+    <custom-navbar username="ABE_Mark45"/>
     <router-view />
-  </div>
-
 </template>
 
 <script>
+import CustomNavbar from './components/CustomNavbar.vue';
 export default {
   name: "App",
+  components: {
+    CustomNavbar
+  }
 };
+
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+<style scoped>
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+* {
+  -ms-overflow-style: none !important;
 }
 </style>

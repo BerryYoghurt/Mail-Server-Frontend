@@ -1,55 +1,53 @@
 <template>
-  <div class="container-fluid d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand">Gmail</a>
-        <!-- Collapse Button-->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link class="nav-link active" aria-current="page" :to="'/users/'+state.username">{{state.username}}</router-link>
-            </li>
-
-          </ul>
-          <form class="d-flex">
-              <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Search By</a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" @click="state.sortingCriteria='sender'">Sender</a></li>
-                <li><a class="dropdown-item" @click="state.sortingCriteria='subject'">Subject</a></li>
-                <li><a class="dropdown-item" @click="state.sortingCriteria='attachments'">Attachments</a></li>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+          <div class="position-sticky pt-3">
+              <ul class="nav flex-column">
+                  <li v-for="(folder, index) in folders" :key="index" class="nav-item">
+                    <a href="#" class="list-group-item list-group-item-action" id="folder"
+                        data-bs-toggle="list" role="tab" @click="state.selectedFolder=folder">{{folder}}</a>
+                 </li>
               </ul>
-              </div>
+          </div>
 
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </nav>
-    <div class="row flex-grow-1 overflow-hidden">
-      <div class="col-2 mh-100 overflow-auto py-2">
+        <!--
         <div class="list-group" id="list-tab" role="tablist">
           <a href="#" v-for="(folder, index) in folders" :key="index" class="list-group-item list-group-item-action" id="folder"
             data-bs-toggle="list" role="tab" @click="state.selectedFolder=folder">{{folder}}</a>
         </div>
+        -->
       </div>
-      <div class="col mh-100 overflow-auto py-2">
-        <div class="list-group">
-          <email-in-homepage v-for="(email, index) in sampleMails" :key="index" v-bind="email"/>
+
+      <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="display: block;">
+        <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th style="text-align: left">Sender</th>
+              <th style="text-align: center">Subject</th>
+              <th style="text-align: right">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(email, index) in state.mails" :key="'email-'+index" @click="()=> router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}})">
+                <td style="text-align: left">
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" :id="'checkbox'+index">
+                    <label :for="'checkbox-'+index">
+                    <span class=" badge bg-danger" v-if="email.priority==3">Critical</span>
+                    <span class=" badge bg-warning text-dark" v-else-if="email.priority==2">Important</span>
+                    <span class=" badge bg-primary" v-else-if="email.priority==1">Normal</span>
+                    {{ email.sender }}
+                    </label>
+                    </div>
+                </td>
+                <td style="text-align: center">{{ email.subject }}</td>
+                <td style="text-align: right">{{ email.date }}</td>
+            </tr>
+          </tbody>
+          <!--<email-in-homepage /> -->
+        </table>
         </div>
       </div>
     </div>
@@ -58,59 +56,40 @@
 
 <script>
 import {reactive} from 'vue';
-import EmailInHomepage from "../components/EmailInHomepage.vue";
+import {useRouter} from 'vue-router'
+import mockMails from '../assets/MockEmails'
+
 export default {
   name: "HomePage",
   setup() {
       const state = reactive({
           sortingCriteria: 'sender',
           selectedFolder: 'Inbox',
-          username: 'ABE_Mark45'
+          username: 'ABE_Mark45',
+          mails: mockMails
       });
 
       const folders = ['inbox', 'trash', 'drafts'];
-
-      const sampleMails = [
-          {
-              subject: "fdfsdfsd",
-              sender: 'fsdfsdfsdf',
-              date: 'fsdfsdfsd',
-              importance: 2
-          },
-          {
-              subject: "fdfsdfsd",
-              sender: 'fsdfsdfsdf',
-              date: 'fsdfsdfsd',
-              importance: 2
-          },
-          {
-              subject: "fdfsdfsd",
-              sender: 'fsdfsdfsdf',
-              date: 'fsdfsdfsd',
-              importance: 2
-          },
-          {
-              subject: "fdfsdfsd",
-              sender: 'fsdfsdfsdf',
-              date: 'fsdfsdfsd',
-              importance: 2
-          }
-      ]
-
-      function showSelectedFolder() {
-          console.log(state.selectedFolder);
-      }
+      const router = useRouter();
 
       return {
           folders,
           state,
-          showSelectedFolder,
-          sampleMails
+          router
       };
   },
 
-  components: {
-    EmailInHomepage,
-  },
 };
 </script>
+
+<style scoped>
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+</style>
