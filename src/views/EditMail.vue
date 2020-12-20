@@ -1,8 +1,8 @@
 <template>
-  <div class="container-fluid vh-100 vw-100"> <!--only render if mail has been fetched-->
+  <div class="container-fluid"> <!--only render if mail has been fetched-->
     <!--button bar-->
-    <div class = "row-sm border shadow">
-      <button class = "btn btn-primary mx-2" @click="save">Save and go exit</button>
+    <div class = "row-sm border shadow bg-transparent">
+      <button class = "btn btn-primary mx-2" @click="save">Save and Exit</button>
       <button class = "btn btn-success mx-2" @click="send">Send</button>
       <button class = "btn btn-danger mx-2"  @click="discard">Discard</button>
     </div>
@@ -61,6 +61,7 @@
               <ul class = "list-group">
                 <li class = "list-group-item" v-for="(receiver,index) in state.mail.receivers" :key="index">
                   {{receiver}}
+                  <button class = "btn btn-close" @click="state.mail.receivers.splice(index,1)"></button>
                 </li>
               </ul>
             </div>
@@ -82,11 +83,11 @@
       </div>
       <!--email-->
       <div class = "col-sm-9 border d-flex align-items-stretch flex-column">
-        <div class = "d-flex align-self-stretch">
+        <div class = "d-flex align-self-stretch h-100">
           <label for="body" hidden>Body</label>
           <textarea
               id="body"
-              class = "form-control"
+              class = "form-control h-100"
               v-model="state.mail.text"
           />
         </div>
@@ -99,6 +100,7 @@
             <ul class = "list-group list-group-horizontal">
               <li class = "card list-group-item" v-for="(att,index) in state.mail.attachments" :key="index">
                 {{att.name}}
+                <button class = "btn btn-close" @click="state.mail.attachments.splice(index,1)"></button>
               </li>
             </ul>
           </div>

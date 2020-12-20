@@ -44,6 +44,25 @@ const routes = [
     name: 'EmailViewNew',
     component: ViewMailNew,
     props: true
+  },
+  {
+    path:'/user/',
+    name:'ViewProfile',
+    children:[
+      {
+        path:'contacts',
+        name:'UserContacts',
+        props:true,
+        component:() => import('../components/UserContacts')
+      },
+      {
+        path:'folders',
+        name:'UserFolders',
+        props:true,
+        component:() => import('../components/UserFolders')
+      }
+    ],
+    component: () => import('../views/ViewProfile')
   }
 ]
 
