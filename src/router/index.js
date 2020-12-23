@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import ViewMailNew from '../views/ViewMailNew.vue'
+import ViewMailNew from '../views/ViewMailNew.vue';
+
 
 const routes = [
   {
@@ -11,6 +12,9 @@ const routes = [
   {
     path: '/about',
     name: 'About',
+    meta: {
+      privateRoute: true
+    },
     component: () => import('../views/About.vue')
   },
   {
@@ -26,12 +30,18 @@ const routes = [
   {
     path: '/homepage',
     name: 'HomePage',
+    meta: {
+      privateRoute: true
+    },
     component: () => import('../views/HomePage.vue')
   },
   {
     path: '/compose',
     name: 'EditMail',
-    params: '',//TODO create a UUID for the email
+    params: '',//TODO create a UUID for the email,
+    meta: {
+      privateRoute: true
+    },
     component: () => import('../views/EditMail.vue')
   },
   {
@@ -42,12 +52,18 @@ const routes = [
   {
     path: '/email',
     name: 'EmailViewNew',
+    meta: {
+      privateRoute: true
+    },
     component: ViewMailNew,
     props: true
   },
   {
     path:'/user/',
     name:'ViewProfile',
+    meta: {
+      privateRoute: true
+    },
     children:[
       {
         path:'contacts',
@@ -70,5 +86,6 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
 
 export default router

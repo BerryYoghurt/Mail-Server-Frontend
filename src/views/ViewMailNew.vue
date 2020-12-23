@@ -44,7 +44,7 @@ export default {
       }
     },
     props: {
-      emailString: Object
+      emailString: String
     }
 }
 </script>

@@ -11,7 +11,7 @@
           <div v-if="state.error">
             <div class="alert alert-danger">{{ state.error }}</div>
           </div>
-          <form>
+          <form @submit.prevent="logIn">
             <div id="email-group" class="form-group mb-3">
               <label class="form-label" for="email">Email</label>
               <input type="email" class="form-control" id="email" v-model="state.email" />
@@ -45,39 +45,48 @@
 
 <script>
 import { reactive } from "vue";
-import {mapMutations} from 'vuex';
-
+import router from '../router';
+import store from '../store';
+import axios from 'axios';
 export default {
   name: "LogIn",
+    beforeRouteEnter() {
+      if(store.getters.loggedInUser)
+        router.push({name: 'HomePage'})
+  },
   setup() {
     const state = reactive({
-      email: "",
-      password: "",
+      email: "ahmed@gmail.com",
+      password: "a",
       error: false,
       loading: false,
     });
 
-    function logIn() {
+    async function logIn() {
       const body = {
         email: state.email,
         password: state.password
       };
-      console.log(body);
-      // axios call here
-      const token = 'token secret gamed';
-      const user = {
-        username: 'Ahmed Bahgat',
-        userHandle: 'ABE_Mark45',
-        id: '435590345'
+      try{
+        state.loading = true;
+        const result = await axios.post('http://localhost:8086/signin', body, {
+          headers: {
+            "Content-Type": "application/json",
+            'Accept': 'application/json'
+          }
+        });
+        //const token = result.data.token;
+        const user = result.data.user;
+        store.commit('SET_USER', user);
+        router.push({name: 'HomePage'});
+      }catch{
+        state.error = 'An error occured';
+        state.loading = false;
       }
-
-      this.SET_USER(user);
-      this.SET_TOKEN(token);
     }
 
     return {
       state,
-      ...mapMutations(['SET_USER', 'SET_TOKEN']),
       logIn
     };
   },
