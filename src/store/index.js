@@ -11,6 +11,7 @@ export default createStore({
         },
         REMOVE_USER(state) {
             state.user = null;
+            localStorage.clear();
         }
     },
     actions: {

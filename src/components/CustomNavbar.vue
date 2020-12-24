@@ -36,6 +36,8 @@
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          <!--Proposal: searching and sorting should be local to HomePage-->
+          <button class="btn" @click="signout()">Sign out</button>
         </div>
       </div>
     </nav>
@@ -43,6 +45,9 @@
 
 <script>
 import { reactive } from 'vue';
+import router from '../router/index';
+import store from '../store/index'
+
 export default {
     name: "CustomNavbar",
     props: {
@@ -52,9 +57,14 @@ export default {
         const state = reactive({
             sortingCriteria: 'sender'
         });
+        const signout = function (){
+            router.replace({name:'LogIn'});
+            store.dispatch('signOut');
+        }
 
         return {
-            state
+            state,
+            signout
         }
     }
 }
