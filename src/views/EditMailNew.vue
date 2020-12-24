@@ -25,7 +25,7 @@
           <!--From-->
           <li class = "card">
             <div class="dropdown text-center">
-            <button v-bind:class="{'btn-primary show': state.mail.priority==0, 'btn-warning show': state.mail.priority==1, 'btn-danger show': state.mail.priority==2}" class="btn dropdown-toggle w-100" id="priority-button" data-bs-toggle="dropdown" role="button">{{priorities[state.mail.priority]}}</button>
+            <button v-bind:class="{'btn-secondary show': state.mail.priority==0, 'btn-success show': state.mail.priority==1, 'btn-warning show': state.mail.priority==2, 'btn-danger show': state.mail.priority==3}" class="btn dropdown-toggle w-100" id="priority-button" data-bs-toggle="dropdown" role="button">{{priorities[state.mail.priority]}}</button>
             <ul class="dropdown-menu" aria-labelledby="priority-button">
               <li><a class="dropdown-item" @click="state.mail.priority=0">Low</a></li>
               <li><a class="dropdown-item" @click="state.mail.priority=1">Normal</a></li>
@@ -74,7 +74,22 @@
         <hr>
         <div class = "card">
           <div class = "card-header">
-            <strong>Attachment(s)</strong>
+            <strong>Saved Attachment(s)</strong>
+          </div>
+          <div class = "card-body">
+            <ul class = "list-group list-group-horizontal">
+              <li class = "card list-group-item" v-for="(att,index) in state.mail.attachments" :key="index">
+                {{att}}
+                <button class = "btn btn-close" @click="state.mail.attachments.splice(index,1)"></button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+        <div class = "card">
+          <div class = "card-header">
+            <strong>New Attachment(s)</strong>
           </div>
           <div class = "card-body">
             <ul class = "list-group list-group-horizontal">
@@ -93,6 +108,8 @@
           >
 
         </div>
+
+
       </div>
     </div>
   </div>
@@ -108,11 +125,12 @@ import store from '../store';
 export default {
   name: "ViewMail",
   props: {
-    mailID:String
+    emailId:String
   },
-  setup(){
+  setup(props){
     const state = reactive({
       mail: {
+        id: null,
         sender: store.state.user,
         subject: 'fdsfs',
         priority: 0,
@@ -124,7 +142,18 @@ export default {
       newMail: false,
       newReceiver: ''
     });
-
+    if(props.emailId){
+      axios.get(encodeURI(`http://localhost:8086/getMail?emailId=${props.emailId}&folderName=drafts`),{
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        withCredentials: true
+      }).then(response => {
+        state.mail = response.data;
+      })
+    }
+    console.log(state.attachments);
     state.mailbox = "draft";
 
     let safeLeave = false;
@@ -145,9 +174,27 @@ export default {
       console.log(state.attachments);
       newAttachmentPath.value = "";
     }
-    const save = function(){
-
-      discard()
+    const save = async function(){
+      const fd = new FormData();
+      state.attachments.forEach(file => {
+        fd.append('files', file);
+      })
+      fd.append('mail', JSON.stringify(state.mail));
+      
+      state.receivers.forEach(rec => {
+        fd.append('receivers', rec);
+      })
+      console.log('Send Mail: ');
+      console.log(state.mail);
+      const response = await axios.post('http://localhost:8086/saveDraft', fd, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json'
+        },
+        withCredentials: true
+      });
+      console.log(response.data);
+      state.mail.id = response.data;
     }
     const send = async function(){
       const fd = new FormData();
@@ -159,7 +206,6 @@ export default {
       state.receivers.forEach(rec => {
         fd.append('receivers', rec);
       })
-      
       const response = await axios.post('http://localhost:8086/compose', fd, {
         headers: {
           'Content-Type': 'multipart/form-data',
