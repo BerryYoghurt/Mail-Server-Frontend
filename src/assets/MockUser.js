@@ -6,7 +6,7 @@ export default reactive({
     folders:[
     'inbox',
     'sent',
-    'draft',
+    'drafts',
     'trash',
     'custom mailbox1',
     'custom mailbox2'

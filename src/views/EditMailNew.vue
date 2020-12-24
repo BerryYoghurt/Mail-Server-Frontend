@@ -138,7 +138,6 @@ export default {
       },
       receivers: ['shaka@adel.com'],
       attachments: [],
-      newMail: false,
       newReceiver: ''
     });
     if(props.emailId){

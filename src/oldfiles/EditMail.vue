@@ -141,7 +141,7 @@ export default {
     //the logic should be: if it's a newly composed mail do not fetch, else fetch, details after seeing API
     setTimeout(() => state.mail = mockMails[1],2000); //for testing.. TODO fetch from API
     //TODO decide on JSON field names
-    state.mailbox = "draft"; //for testing.. TODO get from router and classify
+    state.mailbox = "drafts"; //for testing.. TODO get from router and classify
 
 
 
