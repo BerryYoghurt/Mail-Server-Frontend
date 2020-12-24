@@ -1,13 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 import ViewMailNew from '../views/ViewMailNew.vue';
 
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: 'HomePage'
   },
   {
     path: '/about',
@@ -42,7 +40,7 @@ const routes = [
     meta: {
       privateRoute: true
     },
-    component: () => import('../views/EditMail.vue')
+    component: () => import('../views/EditMailNew.vue')
   },
   {
     path: '/mytest',

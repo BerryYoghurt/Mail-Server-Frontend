@@ -27,7 +27,7 @@
               />
             </div>
 
-            <button @click="logIn" class="btn btn-primary w-100">Log In!</button>
+            <button type="submit" class="btn btn-primary w-100">Log In!</button>
           </form>
         </div>
       </div>
@@ -73,7 +73,8 @@ export default {
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json'
-          }
+          },
+          withCredentials: true
         });
         //const token = result.data.token;
         const user = result.data.user;

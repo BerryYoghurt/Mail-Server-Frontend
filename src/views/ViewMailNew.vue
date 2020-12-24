@@ -18,13 +18,13 @@
             </div>
           </div>
           <br>
-          <div id="email-body">{{email.body}}</div>
+          <div id="email-body">{{email.bodyText}}</div>
           <br>
 
           <div class="dropdown text-center" v-if="email.attachments.length">
             <button class="btn btn-secondary dropdown-toggle col-6" id="attachments-button" data-bs-toggle="dropdown">Attachments</button>
             <ul class="dropdown-menu">
-              <li v-for="(attachment, index) in email.attachments" :key="index"><a class="dropdown-item" :href="attachment.path">{{attachment.filename}}</a></li>
+              <li v-for="(attachment, index) in email.attachments" :key="index"><a class="dropdown-item" @click="downloadAttachment(attachment)">{{attachment}}</a></li>
             </ul>
           </div>
         </div>
@@ -39,8 +39,12 @@ export default {
     name: "ViewMailNew",
     setup(props) {
       const email = JSON.parse(props.emailString);
+      function downloadAttachment(attachment) {
+        window.open(encodeURI(`http://localhost:8086/download?emailId=${email.id}&fileName=${attachment}`));
+      }
       return {
-        email
+        email,
+        downloadAttachment
       }
     },
     props: {

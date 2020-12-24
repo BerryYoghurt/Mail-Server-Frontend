@@ -76,7 +76,8 @@ export default {
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json'
-          }
+          },
+          withCredentials: true
         });
         //const token = result.data.token;
         const user = result.data.user;

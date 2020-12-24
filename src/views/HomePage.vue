@@ -6,7 +6,7 @@
               <ul class="nav flex-column">
                   <li v-for="(folder, index) in folders" :key="index" class="nav-item">
                     <a href="#" class="list-group-item list-group-item-action" id="folder"
-                        data-bs-toggle="list" role="tab" @click="state.selectedFolder=folder">{{folder}}</a>
+                        data-bs-toggle="list" role="tab" @click="fetchFolder(folder)">{{folder}}</a>
                  </li>
               </ul>
           </div>
@@ -20,7 +20,8 @@
       </div>
 
       <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="display: block;">
-        <div class="table-responsive">
+        <h1 v-if="state.mails.length==0">No emails yet!</h1>
+        <div v-else class="table-responsive">
         <table class="table table-striped table-hover">
           <thead>
             <tr>
@@ -30,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(email, index) in state.mails" :key="'email-'+index" @click="()=> router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}})">
+            <tr v-for="(email, index) in state.mails" :key="index" @click="()=> router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}})">
                 <td style="text-align: left">
                     <div class="form-check">
                     <input class="form-check-input" type="checkbox" :id="'checkbox'+index">
@@ -56,8 +57,8 @@
 
 <script>
 import {reactive} from 'vue';
-import {useRouter} from 'vue-router'
-import mockMails from '../assets/MockEmails'
+import router from '../router';
+import axios from 'axios';
 
 export default {
   name: "HomePage",
@@ -66,16 +67,29 @@ export default {
           sortingCriteria: 'sender',
           selectedFolder: 'Inbox',
           username: 'ABE_Mark45',
-          mails: mockMails
+          mails: []
       });
+      const folders = ['inbox', 'trash', 'drafts', 'sent'];
 
-      const folders = ['inbox', 'trash', 'drafts'];
-      const router = useRouter();
-
+      async function fetchFolder(folder) {
+        state.selectedFolder = folder;
+        
+        const response = await axios.get(`http://localhost:8086/folders/${folder}`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json'
+          }
+          ,withCredentials: true
+        });
+        console.log(response.data);
+        state.mails = response.data;
+      }
+      fetchFolder('inbox');
       return {
           folders,
           state,
-          router
+          router,
+          fetchFolder
       };
   },
 
