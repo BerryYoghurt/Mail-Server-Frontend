@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/compose',
     name: 'EditMail',
-    params: '',
+    props: true,
     meta: {
       privateRoute: true
     },

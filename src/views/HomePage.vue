@@ -31,7 +31,11 @@
             </tr>
           </thead>
           <tbody>
+<<<<<<< HEAD
             <tr v-for="(email, index) in state.mails" :key="index" @click="redirectToMail(email)">
+=======
+            <tr v-for="(email, index) in state.mails" :key="index" @click="gotTo(email)">
+>>>>>>> 669182a8c709b78bb93397cbb7a77922d502bc83
                 <td style="text-align: left">
                     <div class="form-check">
                     <input class="form-check-input" type="checkbox" :id="'checkbox'+index">
@@ -93,12 +97,23 @@ export default {
         state.mails = response.data;
       }
       fetchFolder('inbox');
+
+      function gotTo(email) {
+        if(state.selectedFolder != 'drafts')
+          router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}});
+        else {
+          console.log(email.id);
+          router.push({name: 'EditMail', params: {emailId: email.id}});
+        }
+      }
+
       return {
           folders,
           state,
           router,
           fetchFolder,
-          redirectToMail
+          gotTo
+
       };
   },
 
