@@ -86,13 +86,14 @@ export default {
       async function fetchFolder(folder) {
         state.selectedFolder = folder;
         
-        const response = await axios.get(`http://localhost:8086/folders/${folder}`, {
+        const response = await axios.get(encodeURI(`http://localhost:8086/folders/${folder}`), {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           }
           ,withCredentials: true
         });
+        console.log('Fetching mails from ' + folder);
         console.log(response.data);
         state.mails = response.data;
       }
@@ -100,7 +101,7 @@ export default {
 
       function gotTo(email) {
         if(state.selectedFolder != 'drafts')
-          router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}});
+          router.push({name: 'EmailViewNew', params: {emailData: JSON.stringify({folder: state.selectedFolder, id: email.id})}});
         else {
           console.log(email.id);
           router.push({name: 'EditMail', params: {emailId: email.id}});
