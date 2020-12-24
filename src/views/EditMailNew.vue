@@ -174,28 +174,6 @@ export default {
       console.log(state.attachments);
       newAttachmentPath.value = "";
     }
-    const save = async function(){
-      const fd = new FormData();
-      state.attachments.forEach(file => {
-        fd.append('files', file);
-      })
-      fd.append('mail', JSON.stringify(state.mail));
-      
-      state.receivers.forEach(rec => {
-        fd.append('receivers', rec);
-      })
-      console.log('Send Mail: ');
-      console.log(state.mail);
-      const response = await axios.post('http://localhost:8086/saveDraft', fd, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json'
-        },
-        withCredentials: true
-      });
-      console.log(response.data);
-      state.mail.id = response.data;
-    }
     const send = async function(isCompose){
       const fd = new FormData();
       state.attachments.forEach(file => {
@@ -206,7 +184,7 @@ export default {
       state.receivers.forEach(rec => {
         fd.append('receivers', rec);
       })
-      const response = await axios.post('http://localhost:8086/saveDraft', fd, {
+      const response = await axios.post('http://localhost:8086/compose', fd, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json'
