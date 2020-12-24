@@ -5,10 +5,10 @@
         <div class="card-body">
           <div class="row">
             <h3 class="text-truncate bg-gradient card-title col-10" data-bs-toggle="tooltip" data-bs-placement="bottom" :title="email.subject">{{email.subject}}
-              <span class=" badge bg-danger" v-if="email.priority==3">Critical</span>
-              <span class=" badge bg-warning text-dark" v-else-if="email.priority==2">Important</span>
-              <span class=" badge bg-primary" v-else-if="email.priority==1">Normal</span>
-
+              <span class="badge bg-danger" v-if="email.priority==3">Critical</span>
+              <span class="badge bg-warning text-dark" v-else-if="email.priority==2">Important</span>
+              <span class="badge bg-success" v-else-if="email.priority==1">Normal</span>
+              <span class="badge bg-secondary" v-else-if="email.priority==0">Low</span>
             </h3>
           </div>
           <div class="card-subtitle text-muted">

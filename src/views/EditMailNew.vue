@@ -27,9 +27,10 @@
             <div class="dropdown text-center">
             <button v-bind:class="{'btn-primary show': state.mail.priority==0, 'btn-warning show': state.mail.priority==1, 'btn-danger show': state.mail.priority==2}" class="btn dropdown-toggle w-100" id="priority-button" data-bs-toggle="dropdown" role="button">{{priorities[state.mail.priority]}}</button>
             <ul class="dropdown-menu" aria-labelledby="priority-button">
-              <li><a class="dropdown-item" @click="state.mail.priority=0">Normal</a></li>
-              <li><a class="dropdown-item" @click="state.mail.priority=1">Important</a></li>
-              <li><a class="dropdown-item" @click="state.mail.priority=2">Critical</a></li>
+              <li><a class="dropdown-item" @click="state.mail.priority=0">Low</a></li>
+              <li><a class="dropdown-item" @click="state.mail.priority=1">Normal</a></li>
+              <li><a class="dropdown-item" @click="state.mail.priority=2">Important</a></li>
+              <li><a class="dropdown-item" @click="state.mail.priority=3">Critical</a></li>
             </ul>
           </div>
           </li>
@@ -184,7 +185,7 @@ export default {
       }
     })
 
-    const priorities = ['Normal', 'Important', 'Critical'];
+    const priorities = ['Low', 'Normal', 'Important', 'Critical'];
 
     return {
       state,

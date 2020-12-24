@@ -38,7 +38,8 @@
                     <label :for="'checkbox-'+index">
                     <span class=" badge bg-danger" v-if="email.priority==3">Critical</span>
                     <span class=" badge bg-warning text-dark" v-else-if="email.priority==2">Important</span>
-                    <span class=" badge bg-primary" v-else-if="email.priority==1">Normal</span>
+                    <span class="badge bg-success" v-else-if="email.priority==1">Normal</span>
+                    <span class="badge bg-secondary" v-else-if="email.priority==0">Low</span>
                     {{ email.sender }}
                     </label>
                     </div>
@@ -76,7 +77,7 @@ export default {
         
         const response = await axios.get(`http://localhost:8086/folders/${folder}`, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
             'Accept': 'application/json'
           }
           ,withCredentials: true
