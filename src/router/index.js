@@ -43,11 +43,6 @@ const routes = [
     component: () => import('../views/EditMailNew.vue')
   },
   {
-    path: '/mytest',
-    name: 'MyTest',
-    component: () => import('../views/mytest.vue')
-  },
-  {
     path: '/email',
     name: 'EmailViewNew',
     meta: {

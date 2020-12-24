@@ -212,7 +212,6 @@ export default {
       safeguardOnLeave,
       updateReceivers,
       appendAttachments,
-      save,
       send,
       discard,
       priorities
