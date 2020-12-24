@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid"> <!--only render if mail has been fetched-->
+  <div class="container-fluid" v-if="state.mail">
     <!--button bar-->
     <div class = "row-sm border shadow bg-transparent">
       <button class = "btn btn-primary mx-2" @click="save">Save and Exit</button>
@@ -116,7 +116,6 @@ export default {
         sender: store.state.user,
         subject: 'fdsfs',
         priority: 0,
-        mailbox: 'inbox',
         bodyText: 'jgkdjfkg kdfgjkdfgjkdf jdfkg dgkjd jkdg jkdgjk dgfjkdfkgioergeor eeior eroi woife ioer'
       },
       receivers: ['shaka@adel.com'],
@@ -124,12 +123,9 @@ export default {
       newMail: false,
       newReceiver: ''
     });
-
-    state.mailbox = "draft";
+    //no need for mailbox in state, an editable mail is in draft anyway
 
     let safeLeave = false;
-
-
 
     const newAttachmentPath = ref("");
 
@@ -168,7 +164,7 @@ export default {
         withCredentials: true
       });
       console.log(response);
-      //discard()
+      discard()
     }
     const discard = function(){
       router.replace({name:'HomePage'});

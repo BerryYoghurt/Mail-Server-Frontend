@@ -31,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(email, index) in state.mails" :key="index" @click="()=> router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}})">
+            <tr v-for="(email, index) in state.mails" :key="index" @click="redirectToMail(email)">
                 <td style="text-align: left">
                     <div class="form-check">
                     <input class="form-check-input" type="checkbox" :id="'checkbox'+index">
@@ -66,11 +66,18 @@ export default {
   setup() {
       const state = reactive({
           sortingCriteria: 'sender',
-          selectedFolder: 'Inbox',
+          selectedFolder: 'inbox',
           username: 'ABE_Mark45',
           mails: []
       });
-      const folders = ['inbox', 'trash', 'drafts', 'sent'];
+    const folders = ['inbox', 'trash', 'draft', 'sent'];
+    const redirectToMail = function (email){
+        if(state.selectedFolder === 'draft'){
+          router.push({name: 'EmailViewNew', params: {mailID: email.id}});
+        }else{
+          router.push({name: 'EmailViewNew', params: {emailString: JSON.stringify(email)}});
+        }
+    }
 
       async function fetchFolder(folder) {
         state.selectedFolder = folder;
@@ -90,7 +97,8 @@ export default {
           folders,
           state,
           router,
-          fetchFolder
+          fetchFolder,
+          redirectToMail
       };
   },
 

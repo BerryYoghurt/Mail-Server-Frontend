@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/compose',
     name: 'EditMail',
-    params: '',//TODO create a UUID for the email,
+    params: '',
     meta: {
       privateRoute: true
     },
