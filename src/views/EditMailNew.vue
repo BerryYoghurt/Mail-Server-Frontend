@@ -2,8 +2,8 @@
   <div class="container-fluid"> <!--only render if mail has been fetched-->
     <!--button bar-->
     <div class = "row-sm border shadow bg-transparent">
-      <button class = "btn btn-primary mx-2" @click="save">Save and Exit</button>
-      <button class = "btn btn-success mx-2" @click="send">Send</button>
+      <button class = "btn btn-primary mx-2" @click="send(false)">Save and Exit</button>
+      <button class = "btn btn-success mx-2" @click="send(true)">Send</button>
       <button class = "btn btn-danger mx-2"  @click="discard">Discard</button>
     </div>
     <div class = "row border mt-2">
@@ -196,24 +196,24 @@ export default {
       console.log(response.data);
       state.mail.id = response.data;
     }
-    const send = async function(){
+    const send = async function(isCompose){
       const fd = new FormData();
       state.attachments.forEach(file => {
         fd.append('files', file);
       })
       fd.append('mail', JSON.stringify(state.mail));
-      
+      fd.append('compose', isCompose);
       state.receivers.forEach(rec => {
         fd.append('receivers', rec);
       })
-      const response = await axios.post('http://localhost:8086/compose', fd, {
+      const response = await axios.post('http://localhost:8086/saveDraft', fd, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json'
         },
         withCredentials: true
       });
-      console.log(response);
+      console.log(response.data);
       //discard()
     }
     const discard = function(){
