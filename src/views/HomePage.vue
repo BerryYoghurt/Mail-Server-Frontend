@@ -70,7 +70,13 @@ export default {
           username: 'ABE_Mark45',
           mails: []
       });
-    const folders = ['inbox', 'trash', 'drafts', 'sent'];
+        const folders = reactive([]);
+        axios.get(encodeURI('http://localhost:8086/getFolders'),{withCredentials:true})
+        .then(response=>{
+          for(let index in response.data){
+            folders.push(response.data[index]);
+          }
+        });
 
       async function fetchFolder(folder) {
         state.selectedFolder = folder;
