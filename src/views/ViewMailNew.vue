@@ -40,12 +40,13 @@ import {reactive} from 'vue';
 export default {
     name: "ViewMailNew",
     setup(props) {
-      const emailDataJosn = JSON.parse(props.emailData);
+      const emailDataJson = JSON.parse(props.emailData);
+      console.log(emailDataJson);
       const state = reactive({
         email: null
       });
 
-      axios.get(encodeURI(`http://localhost:8086/getMail?emailId=${emailDataJosn.id}&folderName=${emailDataJosn.folder}`),{
+      axios.get(encodeURI(`http://localhost:8086/getMail?emailId=${emailDataJson.id}&folderName=${emailDataJson.folder}`),{
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -57,6 +58,7 @@ export default {
       })
 
       function downloadAttachment(attachment) {
+        console.log(state.email);
         window.open(encodeURI(`http://localhost:8086/download?emailId=${state.email.id}&fileName=${attachment}`));
       }
       return {

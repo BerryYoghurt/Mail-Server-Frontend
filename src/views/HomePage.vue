@@ -12,6 +12,9 @@
                   <li><a class="dropdown-item" @click="state.filterCriteria='sender'">Sender</a></li>
                   <li><a class="dropdown-item" @click="state.filterCriteria='subject'">Subject</a></li>
                   <li><a class="dropdown-item" @click="state.filterCriteria='attachments'">Attachments</a></li>
+                  <li><a class="dropdown-item" @click="state.filterCriteria='body'">Body</a></li>
+                  <li><a class="dropdown-item" @click="state.filterCriteria='priority'">Priority</a></li>
+                  <li><a class="dropdown-item" @click="state.filterCriteria='date'">Date</a></li>
                 </ul>
               </div>
               <br><br>
