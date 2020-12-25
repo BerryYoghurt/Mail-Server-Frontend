@@ -32,17 +32,28 @@
       <div id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
           <div class="position-sticky pt-3">
               <br>
-              <input class="form-control my-2" type="search" placeholder="Search" aria-label="Search" v-model="state.searchString"/>
+              <input class="form-control my-2" type="search" placeholder="Search" aria-label="Search" v-model="state.searchString" v-if="!['priority', 'date'].includes(state.filterCriteria)"/>
+              <input class="w-100 my-2" type="date" v-model="state.searchString" v-if="state.filterCriteria=='date'"/>
+              <div class="dropdown text-center my-2" v-if="state.filterCriteria=='priority'">
+                <button v-bind:class="{'btn-secondary show': state.searchString==0, 'btn-success show': state.searchString==1, 'btn-warning show': state.searchString==2, 'btn-danger show': state.searchString==3}" class="btn dropdown-toggle w-100" id="priority-button-search" data-bs-toggle="dropdown" role="button">{{priorities[state.searchString]}}</button>
+                <ul class="dropdown-menu" aria-labelledby="priority-button">
+                  <li><a href="#" class="dropdown-item" @click="state.searchString=0">Low</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString=1">Normal</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString=2">Important</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString=3">Critical</a></li>
+                </ul>
+              </div>
+
               <div class="btn-group special">
-                <button type="button" class="btn btn-outline-success" style="width:90%;" @click="search">Search</button>
+              <button type="button" class="btn btn-outline-success" style="width:90%;" @click="search">Search</button>
                 <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="state.filterCriteria='sender'">Sender</a></li>
-                  <li><a class="dropdown-item" @click="state.filterCriteria='subject'">Subject</a></li>
-                  <li><a class="dropdown-item" @click="state.filterCriteria='attachments'">Attachments</a></li>
-                  <li><a class="dropdown-item" @click="state.filterCriteria='body'">Body</a></li>
-                  <li><a class="dropdown-item" @click="state.filterCriteria='priority'">Priority</a></li>
-                  <li><a class="dropdown-item" @click="state.filterCriteria='date'">Date</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString='';state.filterCriteria='sender'">Sender</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString='';state.filterCriteria='subject'">Subject</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString='';state.filterCriteria='attachments'">Attachments</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString='';state.filterCriteria='body'">Body</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString=0;state.filterCriteria='priority';">Priority</a></li>
+                  <li><a href="#" class="dropdown-item" @click="state.searchString='2020-12-12';state.filterCriteria='date'">Date</a></li>
                 </ul>
               </div>
               <br><br>
@@ -141,7 +152,7 @@ export default {
   setup() {
       const state = reactive({
           sortingCriteria: 'date',
-          filterCriteria: '',
+          filterCriteria: 'subject',
           selectedFolder: 'inbox',
           username: 'ABE_Mark45',
           mails: [],
@@ -262,6 +273,8 @@ export default {
         console.log(response.data);
         router.go(0);
       }
+      
+      const priorities = ['Low', 'Normal', 'Important', 'Critical'];
 
       return {
           folders,
@@ -274,7 +287,8 @@ export default {
           decrementPage,
           checkBox,
           removeMultipleMails,
-          processMultipleMails
+          processMultipleMails,
+          priorities
       };
   },
 
