@@ -215,7 +215,7 @@ export default {
       function search() {
         console.log(`filter criteria: ${state.filterCriteria}`);
         console.log(`search string: ${state.searchString}`);
-        if(state.searchString == '')
+        if(state.searchString === '')
           return;
         fetchFolder();
         state.filterCriteria = '';
