@@ -43,7 +43,6 @@ import axios from "axios";
 export default {
   name: "ViewProfile",
   setup(){
-    //TODO fetch user data from API using store.user.username or .id or whatever
 
     const store = useStore();
     const username = store.state.user;
@@ -64,7 +63,6 @@ export default {
     };
 
     return{
-      name,
       username,
       changePassword
     }
