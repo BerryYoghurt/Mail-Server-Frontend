@@ -1,50 +1,37 @@
 <template>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light flex-md-nowrap">
       <div class="container">
         <a class="navbar-brand">Gmail</a>
         <!-- Collapse Button-->
+
+
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <router-link class="nav-link active" aria-current="page" to="/user/">{{username}}</router-link>
+            </li>
+          </ul>
+          <ul class="navbar-nav navbar-right mx-2">
+            <li class="nav-item">
+              <button class="btn btn-outline-danger" @click="signout()">Sign out</button>
+            </li>
+          </ul>
         <button
-          class="navbar-toggler"
+          class="navbar-toggler d-md-none"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
+          data-bs-target="#sidebar"
+          aria-controls="sidebar"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
 
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link class="nav-link active" aria-current="page" to="/user/">{{username}}</router-link>
-            </li>
-
-          </ul>
-          <form class="d-flex">
-              <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Search By</a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" @click="state.sortingCriteria='sender'">Sender</a></li>
-                <li><a class="dropdown-item" @click="state.sortingCriteria='subject'">Subject</a></li>
-                <li><a class="dropdown-item" @click="state.sortingCriteria='attachments'">Attachments</a></li>
-              </ul>
-              </div>
-
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-          <!--Proposal: searching and sorting should be local to HomePage-->
-          <button class="btn" @click="signout()">Sign out</button>
-        </div>
       </div>
     </nav>
 </template>
 
 <script>
-import { reactive } from 'vue';
 import router from '../router/index';
 import store from '../store/index'
 
@@ -54,16 +41,13 @@ export default {
         username: String,
     },
     setup() {
-        const state = reactive({
-            sortingCriteria: 'sender'
-        });
-        const signout = function (){
-            router.replace({name:'LogIn'});
-            store.dispatch('signOut');
+        const signout = function () {
+          document.cookie = '';
+          router.replace({name:'LogIn'});
+          store.dispatch('signOut');
         }
 
         return {
-            state,
             signout
         }
     }
