@@ -22,7 +22,7 @@
               >
             </div>
           </li>
-          <!--From-->
+          <!--priority-->
           <li class = "card">
             <div class="dropdown text-center">
             <button v-bind:class="{'btn-secondary show': state.mail.priority==0, 'btn-success show': state.mail.priority==1, 'btn-warning show': state.mail.priority==2, 'btn-danger show': state.mail.priority==3}" class="btn dropdown-toggle w-100" id="priority-button" data-bs-toggle="dropdown" role="button">{{priorities[state.mail.priority]}}</button>
@@ -52,6 +52,8 @@
               <div class = "col-sm-8">
                 <input
                     id = "receiver"
+                    type="email"
+                    class="form-control"
                     v-model = "state.newReceiver"
                     @keyup.enter = "updateReceivers(state.newReceiver)"
                 >

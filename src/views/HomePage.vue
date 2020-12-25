@@ -16,7 +16,7 @@
             {{state.destFolder}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownFolderButton">
-            <li v-for="(folder, index) in folders" :key="index"><a class="dropdown-item" href="#" @click="state.destFolder=folder">{{folder}}</a></li>
+            <li v-for="(folder, index) in destinationFolders" :key="index"><a class="dropdown-item" href="#" @click="state.destFolder=folder" >{{folder}}</a></li>
           </ul>
         </div>
 
@@ -159,16 +159,25 @@ export default {
           searchString: '',
           page: 1,
           selectedIndices: {},
-          destFolder: 'inbox',
+          destFolder: '',
           mailsAction: 'copy'
       });
+        const permanentFolders = ['inbox', 'sent', 'drafts', 'trash'];
+        const destinationFolders = [];
         const folders = reactive([]);
         axios.get(encodeURI('http://localhost:8086/getFolders'),{withCredentials:true})
         .then(response=>{
           for(let index in response.data){
             folders.push(response.data[index]);
+            if(!permanentFolders.includes(folders[index])){
+              destinationFolders.push(folders[index]);
+            }
           }
+          if(destinationFolders.length > 0)
+              state.destFolder = destinationFolders[0];
         });
+
+
 
       async function fetchFolder() {
         let url = `http://localhost:8086/folders/${state.selectedFolder}?`;
@@ -210,6 +219,7 @@ export default {
           return;
         fetchFolder();
         state.filterCriteria = '';
+        state.searchString = '';
       }
 
       async function incrementPage() {
@@ -249,6 +259,10 @@ export default {
       }
 
       async function processMultipleMails() {
+        if(!state.destFolder){
+          return;
+        }
+
         let url = `http://localhost:8086/${state.mailsAction}MultipleMails`;
         let mailsToBeProcessed = [];
         for(let k in state.selectedIndices) {
@@ -279,6 +293,7 @@ export default {
       return {
           folders,
           state,
+          destinationFolders,
           router,
           fetchFolder,
           gotTo,

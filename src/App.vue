@@ -1,6 +1,7 @@
 <template>
     <custom-navbar v-if="store.state.user" :username="store.state.user"/>
     <router-view />
+
 </template>
 
 <script>

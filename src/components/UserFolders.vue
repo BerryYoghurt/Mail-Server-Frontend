@@ -68,6 +68,7 @@ export default {
       folders[currentlyEditing.value] = newName.value;
       editing.value = false;
       currentlyEditing.value = -1;
+      newName.value = '';
     }
 
     return{

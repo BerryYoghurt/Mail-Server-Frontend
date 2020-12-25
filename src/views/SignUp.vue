@@ -79,10 +79,14 @@ export default {
           },
           withCredentials: true
         });
-        //const token = result.data.token;
-        const user = result.data.user;
-        store.commit('SET_USER', user);
-        router.push({name: 'HomePage'});
+        console.log(result.data);
+        if(result.data === false){
+          state.error = "User already registered";
+        }else{
+          const user = result.data.user;
+          store.commit('SET_USER', user);
+          router.push({name: 'HomePage'});
+        }
       }else{
         state.error = "Passwords are not the same";
       }
