@@ -276,13 +276,12 @@ export default {
           array: mailsToBeProcessed
         };
 
-        const response = await axios.post(encodeURI(url), data, {
+        const response = await axios.put(encodeURI(url), data, {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
           withCredentials: true,
-          data: data
         });
         console.log(response.data);
         router.go(0);
