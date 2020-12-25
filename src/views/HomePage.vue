@@ -142,6 +142,7 @@ export default {
         if(state.page != 1 && response.data.length == 0)
           return 0;
         state.mails = response.data;
+        state.selectedIndices = [];
         return state.mails.length || 0;
       }
       fetchFolder();

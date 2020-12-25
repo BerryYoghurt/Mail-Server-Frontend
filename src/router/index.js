@@ -5,14 +5,11 @@ import ViewMailNew from '../views/ViewMailNew.vue';
 const routes = [
   {
     path: '/',
-    redirect: 'HomePage'
+    component: ()=> import('../views/Home.vue')
   },
   {
     path: '/about',
     name: 'About',
-    meta: {
-      privateRoute: true
-    },
     component: () => import('../views/About.vue')
   },
   {

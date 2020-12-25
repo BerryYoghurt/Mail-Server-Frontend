@@ -1,5 +1,5 @@
 <template>
-  <div id="signup" class="d-flex align-items-center justify-content-center container" style="min-height: 60vh">
+  <div id="signup" class="d-flex align-items-center justify-content-center container" style="min-height: 80vh">
     <div class="w-100" style="max-width: 400px">
       <div class="card">
         <div class="card-body">
