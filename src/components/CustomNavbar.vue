@@ -11,7 +11,7 @@
           </ul>
           <ul class="navbar-nav navbar-right mx-2">
             <li class="nav-item">
-              <router-link class="btn btn-outline-success" :to="{ name:'EditMail', params:{emailId:''} }">Compose</router-link>
+              <router-link class="btn btn-outline-success mx-5" :to="{ name:'EditMail', params:{emailId:''} }">Compose</router-link>
               <button class="btn btn-outline-danger" @click="signout()">Sign out</button>
             </li>
           </ul>

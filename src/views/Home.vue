@@ -14,6 +14,7 @@
 
 <script>
 import router from '../router';
+import store from '../store';
 export default {
   name: "Home",
   setup() {
@@ -24,6 +25,11 @@ export default {
     return {
       goto
     }
-  }
+  },
+  beforeRouteEnter() {
+      if(store.getters.loggedInUser)
+        router.push({name: 'HomePage'})
+  },
+
 };
 </script>
