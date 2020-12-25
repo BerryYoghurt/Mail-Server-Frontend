@@ -132,11 +132,11 @@ export default {
       mail: {
         id: null,
         sender: store.state.user,
-        subject: 'fdsfs',
+        subject: 'Draft Subject',
         priority: 0,
-        bodyText: 'jgkdjfkg kdfgjkdfgjkdf jdfkg dgkjd jkdg jkdgjk dgfjkdfkgioergeor eeior eroi woife ioer'
+        bodyText: 'Draft Body'
       },
-      receivers: ['shaka@adel.com'],
+      receivers: [],
       attachments: [],
       newReceiver: ''
     });

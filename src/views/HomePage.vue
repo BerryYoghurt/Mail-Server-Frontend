@@ -4,7 +4,7 @@
       <div id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
           <div class="position-sticky pt-3">
               <br>
-              <input class="form-control my-2" type="search" placeholder="Search" aria-label="Search" v-bind="state.searchString"/>
+              <input class="form-control my-2" type="search" placeholder="Search" aria-label="Search" v-model="state.searchString"/>
               <div class="btn-group special">
                 <button type="button" class="btn btn-outline-success" style="width:90%;" @click="search">Search</button>
                 <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false"></button>
@@ -110,7 +110,7 @@ export default {
   setup() {
       const state = reactive({
           sortingCriteria: 'date',
-          filterCriteria: 'date',
+          filterCriteria: '',
           selectedFolder: 'inbox',
           username: 'ABE_Mark45',
           mails: [],
@@ -130,6 +130,10 @@ export default {
         let url = `http://localhost:8086/folders/${state.selectedFolder}?`;
         url += `sortType=${state.sortingCriteria}`;
         url += `&page=${state.page}`;
+        if(state.filterCriteria){
+          url += `&filterType=${state.filterCriteria}`;
+          url += `&filterValue=${state.searchString}`;
+        }
         const response = await axios.get(encodeURI(url), {
           headers: {
             'Content-Type': 'application/json',
@@ -157,8 +161,12 @@ export default {
       }
 
       function search() {
+        console.log(`filter criteria: ${state.filterCriteria}`);
+        console.log(`search string: ${state.searchString}`);
         if(state.searchString == '')
           return;
+        fetchFolder();
+        state.filterCriteria = '';
       }
 
       async function incrementPage() {
