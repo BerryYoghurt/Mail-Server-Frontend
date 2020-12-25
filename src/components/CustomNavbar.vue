@@ -12,7 +12,7 @@
           <ul class="navbar-nav navbar-right mx-2">
             <li class="nav-item">
               <router-link class="btn btn-outline-success mx-5" :to="{ name:'EditMail', params:{emailId:''} }">Compose</router-link>
-              <button class="btn btn-outline-danger" @click="signout()">Sign out</button>
+              <button class="btn btn-outline-danger" @click="store.dispatch('signOut');router.push({path: '/'})">Sign out</button>
             </li>
           </ul>
         <button
@@ -41,14 +41,9 @@ export default {
         username: String,
     },
     setup() {
-        const signout = function () {
-          document.cookie = '';
-          router.replace({name:'LogIn'});
-          store.dispatch('signOut');
-        }
-
         return {
-            signout
+            store,
+            router
         }
     }
 }

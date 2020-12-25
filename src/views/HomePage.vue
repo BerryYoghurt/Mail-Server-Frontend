@@ -185,7 +185,7 @@ export default {
 
       function gotTo(email) {
         if(state.selectedFolder != 'drafts')
-          router.push({name: 'EmailViewNew', params: {emailData: JSON.stringify({folder: state.selectedFolder, id: email.id})}});
+          router.push({name: 'EmailViewNew', params: {emailData: JSON.stringify({folder: state.selectedFolder, id: email.id}), foldersData: JSON.stringify(folders)}});
         else {
           console.log(email.id);
           router.push({name: 'EditMail', params: {emailId: email.id}});
