@@ -14,7 +14,7 @@
             {{state.destFolder}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownFolderButton">
-            <li v-for="(folder, index) in folders" :key="index"><a class="dropdown-item" href="#" @click="state.destFolder=folder">{{folder}}</a></li>
+            <li v-for="(folder, index) in destinationFolders" :key="index"><a class="dropdown-item" href="#" @click="state.destFolder=folder">{{folder}}</a></li>
           </ul>
         </div>
 
@@ -98,13 +98,25 @@ export default {
       if(!props.emailData)
         router.replace({name: 'HomePage'});
       const folders = JSON.parse(props.foldersData);
+      const permanentFolders = ['inbox', 'sent', 'drafts', 'trash'];
+      const destinationFolders = [];
+      for(let index in folders){
+        if(!permanentFolders.includes(folders[index])){
+          destinationFolders.push(folders[index]);
+        }
+      }
+
       const emailDataJson = JSON.parse(props.emailData);
       console.log(emailDataJson);
       const state = reactive({
         email: null,
         mailAction: 'copy',
-        destFolder: 'inbox'
+        destFolder: ''
       });
+
+      if(destinationFolders.length > 0){
+        state.destFolder = destinationFolders[0];
+      }
 
       axios.get(encodeURI(`http://localhost:8086/getMail?emailId=${emailDataJson.id}&folderName=${emailDataJson.folder}`),{
         headers: {
@@ -123,7 +135,7 @@ export default {
       }
 
       async function removeMail() {
-        const response = await axios.delete(encodeURI(`http://localhost:8086/remove/${state.emailDataJson.folder}`), {
+        const response = await axios.delete(encodeURI(`http://localhost:8086/remove/${emailDataJson.folder}`), {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -138,6 +150,9 @@ export default {
       }
 
       async function processMail() {
+        if(!state.destFolder){
+          return;
+        }
         let url = `http://localhost:8086/${state.mailAction}`;
         
         const data = {
@@ -166,7 +181,7 @@ export default {
         downloadAttachment,
         removeMail,
         processMail,
-        folders
+        destinationFolders
       }
     },
     props: {
