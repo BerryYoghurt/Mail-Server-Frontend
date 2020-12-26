@@ -45,8 +45,16 @@
 
     <div class="w-100" style="max-width: 400px">
         <div class="d-flex justify-content-center my-2">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" v-model="state.searchString">
+                <button class="btn btn-outline-success" type="button" @click="getContacts">Search</button>
+            </div>
+            
+        </div>
+        <div class="d-flex justify-content-center my-2">
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addContactModal">Add Contact</button>
         </div>
+
         <div v-if="state.contacts.length == 0" class="d-flex justify-content-center my-2">
             <h1>No Contacts Yet!</h1>
         </div>
@@ -88,32 +96,51 @@ export default {
             newContact: {
                 name: '',
                 mail: ''
-            }
-        });
-
-        
-        axios.get(encodeURI('http://localhost:8086/getContacts'), {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
             },
-            withCredentials: true
-        }).then(response => {
-            state.contacts = response.data;
+            searchString: ''
         });
-        
 
-        function sendUpdatedContacts() {
-            axios.put(encodeURI('http://localhost:8086/updateContacts'), state.contacts,{
+        function getContacts() {
+            let url = 'http://localhost:8086/getContacts';
+            if(state.searchString != '')
+                url += `?searchString=${state.searchString}`;
+            axios.get(encodeURI(url), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 withCredentials: true
             }).then(response => {
+                state.contacts = response.data;
+            });
+        }
+
+        getContacts();
+
+        function sendDeletedContacts(id) {
+            console.log(id);
+            axios.delete(encodeURI('http://localhost:8086/deleteContact'),{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                withCredentials: true,
+                data: id
+            }).then(response => {
                 console.log(response.data);
             });
 
+        }
+
+        async function sendUpdatedContacts(contact) {
+            const response = await axios.put(encodeURI('http://localhost:8086/updateContact'), contact,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                withCredentials: true
+            });
+            return response.data;
         }
 
        function edit() {
@@ -126,35 +153,37 @@ export default {
             else
                 state.contacts[state.selectedI].emails.push(state.newField);
             state.newField = '';
-            sendUpdatedContacts();
+            sendUpdatedContacts(state.contacts[state.selectedI]);
        }
 
-       function addContact() {
+       async function addContact() {
             if(!state.newContact.name.length || !state.newContact.mail.length)
                 return;
-            state.contacts.push({
+            const newContact = await sendUpdatedContacts({
                 name: state.newContact.name,
                 emails: [state.newContact.mail]
             });
-            sendUpdatedContacts();
+            state.contacts.push(newContact);
        }
 
         function deleteContact(i) {
-            state.contacts.splice(i, 1);
-            sendUpdatedContacts();
+            const contactToBeDeleted = state.contacts.splice(i, 1)[0];
+            sendDeletedContacts(contactToBeDeleted.id);
         }
 
         function deleteEmail(i, j) {
             state.contacts[i].emails.splice(j, 1);
-            sendUpdatedContacts();
+            sendUpdatedContacts(state.contacts[i]);
         }
+
 
         return {
             state,
             edit,
             addContact,
             deleteContact,
-            deleteEmail
+            deleteEmail,
+            getContacts
         }
     }
 }
