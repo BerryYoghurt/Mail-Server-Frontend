@@ -8,6 +8,9 @@
             <li class="nav-item">
               <router-link class="nav-link active" aria-current="page" to="/user/">{{username}}</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link active" aria-current="page" :to="{name:'Contacts'}">Contacts</router-link>
+            </li>
           </ul>
           <ul class="navbar-nav navbar-right mx-2">
             <li class="nav-item">

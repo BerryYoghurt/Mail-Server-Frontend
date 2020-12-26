@@ -11,12 +11,12 @@ export default createStore({
         },
         REMOVE_USER(state) {
             state.user = null;
-            localStorage.clear();
-            document.cookie = '';
         }
     },
     actions: {
         signOut(context) {
+            document.cookie = '';
+            localStorage.clear();
             context.commit('REMOVE_USER')
         },
 

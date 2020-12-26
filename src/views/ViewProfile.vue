@@ -24,12 +24,8 @@
       </div>
       <!--User Data-->
       <div class = "col-8 border">
-        <div class="btn-group">
-          <router-link :to="{ name:'UserContacts'}" append replace tag="button" class="btn btn-primary mx-1" >My Contacts</router-link>
-          <router-link :to="{ name:'UserFolders' }" append replace tag="button" class="btn btn-primary mx-1" >My Folders</router-link>
-        </div>
         <div>
-          <router-view></router-view>
+          <UserFolders/>
         </div>
       </div>
     </div>
@@ -37,14 +33,15 @@
 </template>
 
 <script>
-import {useStore} from 'vuex';
+import store from '../store';
 import axios from "axios";
+import UserFolders from '../components/UserFolders';
 
 export default {
   name: "ViewProfile",
+  components: {UserFolders},
   setup(){
 
-    const store = useStore();
     const username = store.state.user;
 
     const changePassword = function(event){

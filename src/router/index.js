@@ -49,6 +49,14 @@ const routes = [
     props: true
   },
   {
+    path: '/contacts',
+    name: 'Contacts',
+    meta: {
+      privateRoute: true
+    },
+    component: () => import('../views/Contacts.vue')
+  },
+  {
     path:'/user/',
     name:'ViewProfile',
     meta: {
@@ -56,17 +64,11 @@ const routes = [
     },
     children:[
       {
-        path:'contacts',
-        name:'UserContacts',
-        props:true,
-        component:() => import('../components/UserContacts')
-      },
-      {
         path:'folders',
         name:'UserFolders',
         props:true,
         component:() => import('../components/UserFolders')
-      }
+      },
     ],
     component: () => import('../views/ViewProfile')
   }
