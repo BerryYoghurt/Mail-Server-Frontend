@@ -56,6 +56,7 @@
                     class="form-control"
                     v-model = "state.newReceiver"
                     @keyup.enter = "updateReceivers()"
+                    placeholder="Press Enter to submit.."
                 >
               </div>
             </div>
@@ -192,7 +193,17 @@ export default {
       safeLeave = true;
     }
     const safeguardOnLeave = function(){
-      return safeLeave || confirm("Leave without saving?");
+      if(!safeLeave){
+        if(confirm("Leave without saving?")){
+          safeLeave = true;
+          return true;
+        }else{
+          return false;
+        }
+      }else{
+        return true;
+      }
+      //return safeLeave || confirm("Leave without saving?");
     }
 
     window.addEventListener('beforeunload',function(e){

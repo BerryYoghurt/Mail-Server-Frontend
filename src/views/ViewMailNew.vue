@@ -46,7 +46,7 @@
               <h4 class="col"><span class="badge round-pill bg-secondary">{{state.email.sender}}</span></h4>
               <div class="col text-end">{{new Date(state.email.date).toDateString()}}</div>
             </div>
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#receiversCollapse" aria-expanded="false" aria-controls="collapseExample">Receivers</button>
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#receiversCollapse" aria-expanded="false" aria-controls="collapseExample">Receivers</button>
             <div class="collapse" id="receiversCollapse">
             <ul class="list-group">
               <li class="list-group-item" v-for="(receiver, i) in state.email.receivers" :key="i">{{receiver}}</li>

@@ -7,7 +7,7 @@
             {{folder}}
           </div>
           <div class = "mx-0 my-0 px-0 py-0" v-if="currentlyEditing === index">
-            <input v-model="newName" @keyup.enter="renameFolder()">
+            <input v-model="newName" @keyup.enter="renameFolder()" placeholder="Press Enter to submit..">
           </div>
           <div class="mx-0 my-0 px-0 py-0" v-if="!permanentFolders.includes(folder)">
             <button @click="currentlyEditing=index" class="btn">
