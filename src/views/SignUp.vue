@@ -57,10 +57,10 @@ export default {
   },
   setup() {
     const state = reactive({
-      email: "ahmed@gmail.com",
-      password: "a",
-      name: "ahmed bahgat",
-      confirmPassword: "a",
+      email: "",
+      password: "",
+      name: "",
+      confirmPassword: "",
       error: false,
       loading: false,
     });

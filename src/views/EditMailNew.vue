@@ -39,9 +39,9 @@
             <div class="card-header row mx-0">Receivers</div>
             <div class = "card-body">
               <ul class = "list-group">
-                <li class = "list-group-item" v-for="(receiver,index) in state.receivers" :key="index">
+                <li class = "list-group-item" v-for="(receiver,index) in state.mail.receivers" :key="index">
                   {{receiver}}
-                  <button class = "btn btn-close" @click="state.receivers.splice(index,1)"></button>
+                  <button class = "btn btn-close" @click="state.mail.receivers.splice(index,1)"></button>
                 </li>
               </ul>
             </div>
@@ -55,7 +55,7 @@
                     type="email"
                     class="form-control"
                     v-model = "state.newReceiver"
-                    @keyup.enter = "updateReceivers(state.newReceiver)"
+                    @keyup.enter = "updateReceivers()"
                 >
               </div>
             </div>
@@ -134,11 +134,11 @@ export default {
       mail: {
         id: null,
         sender: store.state.user,
-        subject: 'Draft Subject',
+        subject: '',
         priority: 0,
-        bodyText: 'Draft Body'
+        bodyText: '',
+        receivers: []
       },
-      receivers: [],
       attachments: [],
       newReceiver: ''
     });
@@ -160,9 +160,8 @@ export default {
     const newAttachmentPath = ref("");
 
     const updateReceivers = function(){
-      if(state.newReceiver && !state.receivers.includes(state.newReceiver)){
-        state.receivers.push(state.newReceiver);
-        console.log(state.receivers);
+      if(state.newReceiver && !state.mail.receivers.includes(state.newReceiver)){
+        state.mail.receivers.push(state.newReceiver);
         state.newReceiver = "";
       }
     }
@@ -178,18 +177,15 @@ export default {
       })
       fd.append('mail', JSON.stringify(state.mail));
       fd.append('compose', isCompose);
-      state.receivers.forEach(rec => {
-        fd.append('receivers', rec);
-      })
-      const response = await axios.post('http://localhost:8086/compose', fd, {
+      console.log('sent mail');
+      await axios.post('http://localhost:8086/compose', fd, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json'
         },
         withCredentials: true
       });
-      console.log(response);
-      discard()
+      discard();
     }
     const discard = function(){
       router.replace({name:'HomePage'});

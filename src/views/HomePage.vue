@@ -97,7 +97,7 @@
                   </label>
                 </td>
                 <td style="text-align: center" class="col-3"  @click="gotTo(email)">{{ email.subject }}</td>
-                <td style="text-align: right" class="col-3"  @click="gotTo(email)">{{ email.date }}</td>
+                <td style="text-align: right" class="col-3"  @click="gotTo(email)">{{ new Date(email.date).toDateString() }}</td>
             </tr>
           </tbody>
           <!--<email-in-homepage /> -->
